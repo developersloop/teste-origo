@@ -3,7 +3,7 @@
 let mock = require('../../fixtures/example.json')
 
 // id mock sempre acrescido de 1 (1,2,3) isso permitira acrescentar dados na base e testar mais de mais uma vez
-const idMock = 47;
+const idMock = 50;
 const habilitEditOrDelete = (id = idMock) => {
     return cy.request('GET', `${Cypress.env('url')}/disabled-for-test/${id}`)
         .then(res => {
@@ -31,10 +31,11 @@ describe('Testing API links', function() {
     })
 
     it('Success status 201 created new shorts links', function() {
+        // trocar o indice do array mock.links[0] pois acaba falhando  o teste pq esbarra na regra de negocio do encurtador de links
         cy.request({
             method: 'post',
             url: Cypress.env('url'),
-            body: mock.links[0],
+            body: mock.links[3],
             failOnStatusCode: false,
         })
         .then(res => {
