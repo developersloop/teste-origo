@@ -1,0 +1,23 @@
+{
+  "name": "Using fixtures to represent data",
+  "email": "hello@cypress.io",
+  "body": "Fixtures are a great way to mock data for responses to routes",
+  "links": [
+    { "link": "https://docs.cypress.io/api/commands/request" },
+    { "link": "https://talkingabouttesting.com/2022/09/01/testes-de-api-com-cypress-cenarios-negativos/" },
+    { "link": "https://www.google.com/search?q=compare+propertys+array+object+cypress&rlz=1C1GCEU_pt-BRBR1020BR1020&oq=compare+propertys+array+object+cypress&aqs=chrome..69i57.7499j0j7&sourceid=chrome&ie=UTF-8" },
+    { "link": "https://github.com/developersloop/teste-origo" }
+  ],
+  "messages": [
+    "Não é possível encurtar um link já existente.",
+    "Link nao e valido para ser redirecionado",
+    "Link excluido com sucesso.",
+    "Nao é possível excluir o link.",
+    "Nao existe este link.",
+    "Link editado com sucesso.",
+    "Nao é possível alterar o link.",
+    "Link disabilitado com sucesso.",
+    "Link habilitado para edição ou remoção",
+    "Url Invalida"
+  ]
+}

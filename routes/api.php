@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 
 Route::prefix('link')->group(function () {
     Route::get('/', 'LinksController@links')->name('links');
+    Route::get('/disabled-for-test/{id}', 'LinksController@disableExpirateForTestCypress')->name('links');
     Route::post('/', 'LinksController@shortLink')->name('short-link');
     Route::put('/{id}', 'LinksController@updateLink')->name('update-link');
     Route::delete('/{id?}/{link?}/{short_link?}', 'LinksController@deleteLink')->name('delete-link');

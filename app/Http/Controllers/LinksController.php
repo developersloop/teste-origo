@@ -88,4 +88,18 @@ class LinksController extends Controller
             500);
         }
     }
+
+    public function disableExpirateForTestCypress($id) {
+        try {
+
+            return $this->serviceLink->disableExpirateForTestCypress($id);
+
+         } catch (\Exception $e) {
+             return response()->json([
+                     'status' => 500,
+                     'message' =>  $e->getMessage(),
+                 ],
+             500);
+         }
+    }
 }

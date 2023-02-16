@@ -37,19 +37,29 @@ class LinksRepository {
         if($existsLink) return $this->response(404, 'Não é possível encurtar um link já existente.');
 
         else {
-            $hash_link = Hash::make($link);
+            $url = $link;
+            if (!str_contains($url, 'https')) return $this->response(500, 'Url Invalida');
 
-            Links::create([
-                'current_link'   => $link ,
-                'short_link'     => $hash_link,
-                'shortened_link' => SHORTENED_LINK,
-                'disabled'       => DISABLED,
-                'link_expirate'  => Carbon::now()->addDays(7),
-                'created_at'     => Carbon::now(),
-                'updated_at'     => Carbon::now()
-            ]);
+            $headers = get_headers($url, 1);
+            $isInValidUrlRedirect = str_contains($headers[0], 'Not Found');
 
-            return redirect()->away($link);
+            if ($isInValidUrlRedirect) return $this->response(404, 'Link nao e valido para ser redirecionado');
+
+            else {
+                $hash_link = Hash::make($link);
+
+                Links::create([
+                    'current_link'   => $link ,
+                    'short_link'     => $hash_link,
+                    'shortened_link' => SHORTENED_LINK,
+                    'disabled'       => DISABLED,
+                    'link_expirate'  => Carbon::now()->addDays(7),
+                    'created_at'     => Carbon::now(),
+                    'updated_at'     => Carbon::now()
+                ]);
+
+                return redirect()->away($link);
+            }
         }
 
     }
@@ -66,7 +76,7 @@ class LinksRepository {
 
             if (!$isShortLink) {
                 $link->delete();
-                return $this->response(200,'Link excluido com sucesso.');
+                return $this->response(202,'Link excluido com sucesso.');
             }
 
             else return $this->response(404,'Nao é possível excluir o link.');
@@ -86,6 +96,15 @@ class LinksRepository {
                 : false;
 
             if (!$isShortLink) {
+
+                $url = $newLink;
+
+                if (!str_contains($url, 'https')) return $this->response(500, 'Url Invalida');
+
+                $headers = get_headers($url, 1);
+                $isInValidUrlRedirect = str_contains($headers[0], 'Not Found');
+
+                if ($isInValidUrlRedirect) return $this->response(404, 'Link nao e valido para ser redirecionado');
 
                 $link->update([
                     'current_link'   => $newLink,
@@ -121,6 +140,20 @@ class LinksRepository {
                 'message' => $message,
             ],
         $status);
+    }
+
+    public function disableExpirateForTestCypress($id) {
+        $link = $this->link($id);
+
+        if ($link->count() > 0) {
+            $link->update([
+                'shortened_link' => false
+            ]);
+
+            return $this->response(200, 'Link habilitado para edição ou remoção');
+        }
+
+        else return  $this->response(404,'Nao existe este link.');
     }
 }
 
